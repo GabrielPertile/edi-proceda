@@ -35,7 +35,7 @@
     }
   },
   "bin": {
-    "edi-proceda": "./dist/cli.js"
+    "edi-proceda": "dist/cli.js"
   },
   "files": [
     "dist"
