@@ -16,7 +16,16 @@ export {
 } from "./core/fields.js";
 export { EdiFormatError, type Issue, type IssueCode, type IssueSeverity } from "./core/issues.js";
 export { type FormatOptions, formatRecord, parseRecord } from "./core/record.js";
-
+// NF-e → NOTFIS
+export {
+  type Nfe,
+  type NfeEndereco,
+  type NfeItem,
+  type NfeParticipante,
+  type NfeVolume,
+  parseNfe,
+} from "./nfe/parse.js";
+export { type NfeToNotfisOptions, nfeToNotfisInput, notfisFromNfe } from "./nfe/to-notfis.js";
 // NOTFIS 3.1
 export { computeTotals, type GenerateNotfisOptions, generateNotfis } from "./notfis/generate.js";
 export { NOTFIS_31 } from "./notfis/layout.js";

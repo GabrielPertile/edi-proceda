@@ -116,22 +116,48 @@ const arquivo = generateNotfis({
 - Valores que não cabem no campo lançam `EdiFormatError` em vez de serem cortados silenciosamente. Texto longo é truncado por padrão (`truncateText: false` muda isso).
 - Quebra de linha padrão `\r\n`, configurável.
 
-## Gerar a partir do XML da NF-e
+## Gerar a partir de XMLs de NF-e
 
-O exemplo [`examples/nfe-para-notfis.ts`](examples/nfe-para-notfis.ts) lê o XML de uma NF-e (sem dependências) e gera o NOTFIS correspondente:
+Na prática, o NOTFIS quase sempre nasce das notas fiscais já emitidas. `notfisFromNfe` recebe um ou mais XMLs de NF-e (com ou sem o envelope `<nfeProc>`) e gera o arquivo, agrupando as notas por emitente (`311`) e por destinatário (`312`):
 
-```bash
-npx tsx examples/nfe-para-notfis.ts nota.xml > NOTFIS.TXT
+```ts
+import { readFileSync, readdirSync } from "node:fs";
+import { notfisFromNfe } from "edi-proceda";
+
+const xmls = readdirSync("notas")
+  .filter((f) => f.endsWith(".xml"))
+  .map((f) => readFileSync(`notas/${f}`, "utf8"));
+
+const arquivo = notfisFromNfe(xmls, {
+  // Campos que a NF-e não tem e a transportadora pode exigir:
+  nota: (nfe) => ({ tipoIcms: "S", romaneio: nfe.numero }),
+});
 ```
 
-Alguns campos não existem no XML e precisam ser combinados com a transportadora (`tipoIcms`, `seguroEfetuado`, `freteDiferenciado`, espécie dos volumes). A chave de acesso da NF-e não tem campo no NOTFIS 3.1; transportadoras que a exigem costumam usar o NOTFIS 5.0.
+| NOTFIS | Vem do XML |
+| --- | --- |
+| `000` remetente / destinatário | emitente da primeira nota / `<transporta>` (ou opção `destinatario`) |
+| `311` embarcadora | `<emit>`; data de embarque = `dhSaiEnt` (ou `dhEmi`, ou opção `dataEmbarque`) |
+| `312` destinatário | `<dest>`, com o endereço de `<entrega>` quando a nota tem local de entrega diferente |
+| `313` nota | série, número, emissão, `natOp`, `modFrete` (1 e 4 = FOB, demais = CIF), soma dos `<vol>` (quantidade, peso bruto, espécie), `vNF`, `vICMS`, `vST` |
+| `333` complemento | CFOP do primeiro item |
+| `314` mercadorias | itens (`xProd`, `qCom`, `uCom`); desligue com `mercadorias: false` |
+
+- Campos sem equivalente na NF-e recebem um padrão (`tipoIcms: "N"`, `seguroEfetuado: "N"`, `freteDiferenciado: "N"`) que pode ser trocado com a opção `nota`.
+- `nfeToNotfisInput` devolve a estrutura antes de gerar o texto, para revisar ou completar; `parseNfe` lê um XML isolado.
+- A chave de acesso da NF-e não tem campo no NOTFIS 3.1; transportadoras que a exigem costumam usar o NOTFIS 5.0.
 
 ## CLI
 
 ```bash
 npx edi-proceda notfis NOTFIS.TXT            # JSON em stdout, problemas em stderr
 npx edi-proceda notfis NOTFIS.TXT --issues   # só a validação; sai com código 1 se houver erro
+
+npx edi-proceda nfe2notfis notas/*.xml -o NOTFIS.TXT   # gera a partir das NF-e e valida o resultado
+npx edi-proceda nfe2notfis nota.xml --destinatario "TRANSPORTADORA X" --data-embarque 2026-10-20
 ```
+
+`nfe2notfis` aceita também `--remetente` e `--sem-mercadorias`. Sem `-o`, o arquivo vai para stdout.
 
 ## Layouts próprios
 
@@ -183,7 +209,7 @@ PROCEDA é um padrão de mercado; este projeto não tem relação com a empresa 
 
 ## English summary
 
-`edi-proceda` reads and writes PROCEDA EDI files, the fixed-width format Brazilian shippers and carriers use to exchange invoices (NOTFIS), delivery events (OCOREN), freight bills (CONEMB) and billing (DOCCOB). It currently supports NOTFIS 3.1 with fully typed output, lossless round-tripping, CNPJ/CPF check-digit validation and totals reconciliation. Every issue is reported with line, record, field and position instead of throwing. Layouts are declarative data, verified by tests, so adding a new version is mostly transcribing the spec.
+`edi-proceda` reads and writes PROCEDA EDI files, the fixed-width format Brazilian shippers and carriers use to exchange invoices (NOTFIS), delivery events (OCOREN), freight bills (CONEMB) and billing (DOCCOB). It currently supports NOTFIS 3.1 with fully typed output, generation straight from NF-e XML files, lossless round-tripping, CNPJ/CPF check-digit validation and totals reconciliation. Every issue is reported with line, record, field and position instead of throwing. Layouts are declarative data, verified by tests, so adding a new version is mostly transcribing the spec.
 
 ## Licença
 
