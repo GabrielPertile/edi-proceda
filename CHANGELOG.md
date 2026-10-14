@@ -2,6 +2,13 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e versionamento [SemVer](https://semver.org/lang/pt-BR/).
 
+## [0.2.0] - 2026-10-14
+
+### Adicionado
+- `notfisFromNfe`: gera NOTFIS 3.1 a partir de um ou mais XMLs de NF-e, agrupando por emitente e destinatário.
+- `nfeToNotfisInput` e `parseNfe` para revisar os dados antes de gerar.
+- CLI `edi-proceda nfe2notfis <xmls...>`, que gera e valida o arquivo.
+
 ## [0.1.0] - 2026-10-14
 
 ### Adicionado
@@ -11,4 +18,5 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e
 - CLI `edi-proceda notfis`.
 - Exemplo de geração de NOTFIS a partir do XML da NF-e (`examples/nfe-para-notfis.ts`).
 
+[0.2.0]: https://github.com/GabrielPertile/edi-proceda/releases/tag/v0.2.0
 [0.1.0]: https://github.com/GabrielPertile/edi-proceda/releases/tag/v0.1.0
