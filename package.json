@@ -1,0 +1,61 @@
+{
+  "name": "edi-proceda",
+  "version": "0.1.0",
+  "description": "Parser, gerador e validador tipado para arquivos EDI no padrão PROCEDA (NOTFIS, OCOREN, CONEMB, DOCCOB).",
+  "keywords": [
+    "edi",
+    "proceda",
+    "notfis",
+    "ocoren",
+    "conemb",
+    "doccob",
+    "logistica",
+    "transportadora",
+    "tms",
+    "brasil"
+  ],
+  "author": "Gabriel Pertile Soares",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SEU_USUARIO/edi-proceda.git"
+  },
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "bin": {
+    "edi-proceda": "./dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check .",
+    "format": "biome check --write .",
+    "prepublishOnly": "npm run typecheck && npm test && npm run build"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.15",
+    "@types/node": "^22.0.0",
+    "@vitest/coverage-v8": "^3.2.7",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.7"
+  }
+}
