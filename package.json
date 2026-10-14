@@ -20,6 +20,10 @@
     "type": "git",
     "url": "git+https://github.com/GabrielPertile/edi-proceda.git"
   },
+  "homepage": "https://github.com/GabrielPertile/edi-proceda#readme",
+  "bugs": {
+    "url": "https://github.com/GabrielPertile/edi-proceda/issues"
+  },
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

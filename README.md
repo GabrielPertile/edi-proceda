@@ -16,7 +16,7 @@ Quem já integrou ERP com transportadora conhece o problema: arquivos de largura
 | NOTFIS | 5.0 | 🗺️ planejado |
 | OCOREN (ocorrências) | 3.1 / 5.0 | 🗺️ planejado |
 | CONEMB (conhecimentos) | 3.1 / 5.0 | 🗺️ planejado |
-| DOCCOB (cobrança) | 3.1 / 5.0 | 🗺️ planejado |
+| DOCCOB (cobrança) | 3.0A / 5.0 | 🗺️ planejado |
 
 ## Instalação
 
@@ -115,6 +115,16 @@ const arquivo = generateNotfis({
 - O registro `318` é calculado automaticamente quando `totais` não é informado, somando em centavos para não acumular erro de ponto flutuante.
 - Valores que não cabem no campo lançam `EdiFormatError` em vez de serem cortados silenciosamente. Texto longo é truncado por padrão (`truncateText: false` muda isso).
 - Quebra de linha padrão `\r\n`, configurável.
+
+## Gerar a partir do XML da NF-e
+
+O exemplo [`examples/nfe-para-notfis.ts`](examples/nfe-para-notfis.ts) lê o XML de uma NF-e (sem dependências) e gera o NOTFIS correspondente:
+
+```bash
+npx tsx examples/nfe-para-notfis.ts nota.xml > NOTFIS.TXT
+```
+
+Alguns campos não existem no XML e precisam ser combinados com a transportadora (`tipoIcms`, `seguroEfetuado`, `freteDiferenciado`, espécie dos volumes). A chave de acesso da NF-e não tem campo no NOTFIS 3.1; transportadoras que a exigem costumam usar o NOTFIS 5.0.
 
 ## CLI
 
