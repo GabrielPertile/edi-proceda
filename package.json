@@ -18,7 +18,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SEU_USUARIO/edi-proceda.git"
+    "url": "git+https://github.com/GabrielPertile/edi-proceda.git"
   },
   "type": "module",
   "main": "./dist/index.cjs",

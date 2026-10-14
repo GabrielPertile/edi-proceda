@@ -1,6 +1,6 @@
 # edi-proceda
 
-[![CI](https://github.com/SEU_USUARIO/edi-proceda/actions/workflows/ci.yml/badge.svg)](https://github.com/SEU_USUARIO/edi-proceda/actions/workflows/ci.yml)
+[![CI](https://github.com/GabrielPertile/edi-proceda/actions/workflows/ci.yml/badge.svg)](https://github.com/GabrielPertile/edi-proceda/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/edi-proceda.svg)](https://www.npmjs.com/package/edi-proceda)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
